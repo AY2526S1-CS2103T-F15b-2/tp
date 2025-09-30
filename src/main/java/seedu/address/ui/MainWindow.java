@@ -4,6 +4,7 @@ import java.util.logging.Logger;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.input.KeyCombination;
@@ -24,6 +25,9 @@ import seedu.address.logic.parser.exceptions.ParseException;
 public class MainWindow extends UiPart<Stage> {
 
     private static final String FXML = "MainWindow.fxml";
+
+    private boolean isDarkMode = true;
+
 
     private final Logger logger = LogsCenter.getLogger(getClass());
 
@@ -147,6 +151,29 @@ public class MainWindow extends UiPart<Stage> {
         }
     }
 
+    /**
+     * Toggle dark/light mode
+     */
+    @FXML
+    public void handleToggleMode() {
+        Scene scene = primaryStage.getScene();
+        scene.getStylesheets().clear();
+
+        if (isDarkMode) {
+            // Switch to Light Theme
+            scene.getStylesheets().add(
+                    getClass().getResource("/view/LightTheme.css").toExternalForm()
+            );
+            isDarkMode = false;
+        } else {
+            // Switch to Dark Theme
+            scene.getStylesheets().add(
+                    getClass().getResource("/view/DarkTheme.css").toExternalForm()
+            );
+            isDarkMode = true;
+        }
+    }
+
     void show() {
         primaryStage.show();
     }
@@ -184,6 +211,10 @@ public class MainWindow extends UiPart<Stage> {
 
             if (commandResult.isExit()) {
                 handleExit();
+            }
+
+            if (commandResult.isToggleMode()) {
+                handleToggleMode();
             }
 
             return commandResult;

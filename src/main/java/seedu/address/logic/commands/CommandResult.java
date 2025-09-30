@@ -48,6 +48,10 @@ public class CommandResult {
         return exit;
     }
 
+    public boolean isToggleMode() {
+        return true;
+    }
+
     @Override
     public boolean equals(Object other) {
         if (other == this) {
