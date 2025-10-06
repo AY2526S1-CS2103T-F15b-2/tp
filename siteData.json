@@ -40,7 +40,7 @@
       "src": "DeveloperGuide.md",
       "title": "Developer Guide",
       "headings": {
-        "ab-3-developer-guide": "AB-3 Developer Guide",
+        "nus-event-mailer-pro-developer-guide": "NUS Event Mailer Pro Developer Guide",
         "acknowledgements": "Acknowledgements",
         "setting-up-getting-started": "Setting up, getting started",
         "design": "Design",
@@ -107,7 +107,7 @@
       "src": "UserGuide.md",
       "title": "User Guide",
       "headings": {
-        "ab-3-user-guide": "AB-3 User Guide",
+        "nus-event-mailer-pro-user-guide": "NUS Event Mailer Pro User Guide",
         "quick-start": "Quick start",
         "features": "Features",
         "viewing-help-help": "Viewing help : help",
@@ -131,7 +131,7 @@
       "src": "index.md",
       "title": "",
       "headings": {
-        "addressbook-level-3": "AddressBook Level-3"
+        "nus-event-mailer-pro": "NUS Event Mailer Pro"
       },
       "headingKeywords": {}
     },
@@ -139,7 +139,7 @@
       "src": "team/asaiyume.md",
       "title": "Zibin's Project Portfolio Page",
       "headings": {
-        "project-addressbook-level-3": "Project: AddressBook Level 3"
+        "project-nus-event-mailer-pro": "Project: NUS Event Mailer Pro"
       },
       "headingKeywords": {}
     },
@@ -147,7 +147,7 @@
       "src": "team/czx123.md",
       "title": "Zhouxuan's Project Portfolio Page",
       "headings": {
-        "project-addressbook-level-3": "Project: AddressBook Level 3"
+        "project-nus-event-mailer-pro": "Project: NUS Event Mailer Pro"
       },
       "headingKeywords": {}
     },
@@ -155,7 +155,7 @@
       "src": "team/reven0n.md",
       "title": "John Doe's Project Portfolio Page",
       "headings": {
-        "project-addressbook-level-3": "Project: AddressBook Level 3"
+        "project-nus-event-mailer-pro": "Project: NUS Event Mailer Pro"
       },
       "headingKeywords": {}
     },
@@ -163,7 +163,7 @@
       "src": "team/rizrn.md",
       "title": "rizrn's Project Portfolio Page",
       "headings": {
-        "project-addressbook-level-3": "Project: AddressBook Level 3"
+        "project-nus-event-mailer-pro": "Project: NUS Event Mailer Pro"
       },
       "headingKeywords": {}
     },
@@ -171,7 +171,7 @@
       "src": "team/ywijie.md",
       "title": "John Doe's Project Portfolio Page",
       "headings": {
-        "project-addressbook-level-3": "Project: AddressBook Level 3"
+        "project-nus-event-mailer-pro": "Project: NUS Event Mailer Pro"
       },
       "headingKeywords": {}
     }
