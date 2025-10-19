@@ -13,6 +13,7 @@ public class CliSyntax {
     public static final Prefix PREFIX_TAG = new Prefix("--tag");
     public static final Prefix PREFIX_DATE = new Prefix("--date");
     public static final Prefix PREFIX_CONTACT = new Prefix("--contact");
+    public static final Prefix PREFIX_REMARK = new Prefix("--remark");
     public static final Prefix PREFIX_EVENT = new Prefix("--event");
 
 }

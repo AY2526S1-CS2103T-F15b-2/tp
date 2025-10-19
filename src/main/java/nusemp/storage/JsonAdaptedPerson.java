@@ -15,6 +15,7 @@ import nusemp.model.person.Email;
 import nusemp.model.person.Name;
 import nusemp.model.person.Person;
 import nusemp.model.person.Phone;
+import nusemp.model.person.Remark;
 import nusemp.model.tag.Tag;
 
 /**
@@ -32,6 +33,7 @@ class JsonAdaptedPerson {
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private final String address;
+    private final String remark;
 
     private final List<JsonAdaptedTag> tags = new ArrayList<>();
 
@@ -41,11 +43,13 @@ class JsonAdaptedPerson {
     @JsonCreator
     public JsonAdaptedPerson(@JsonProperty("name") String name, @JsonProperty("email") String email,
             @JsonProperty("phone") String phone, @JsonProperty("address") String address,
+            @JsonProperty("remark") String remark,
             @JsonProperty("tags") List<JsonAdaptedTag> tags) {
         this.name = name;
         this.email = email;
         this.phone = phone;
         this.address = address;
+        this.remark = remark;
         if (tags != null) {
             this.tags.addAll(tags);
         }
@@ -59,6 +63,7 @@ class JsonAdaptedPerson {
         email = source.getEmail().value;
         phone = source.getPhone().value;
         address = source.getAddress().value;
+        remark = source.getRemark().value;
         tags.addAll(source.getTags().stream().map(JsonAdaptedTag::new).toList());
     }
 
@@ -105,9 +110,11 @@ class JsonAdaptedPerson {
             modelAddress = new Address(address);
         }
 
+        final Remark modelRemark = new Remark("");
+
         final Set<Tag> modelTags = new HashSet<>(personTags);
 
-        return new Person(modelName, modelEmail, modelPhone, modelAddress, modelTags);
+        return new Person(modelName, modelEmail, modelPhone, modelAddress, modelTags, modelRemark);
     }
 
 }

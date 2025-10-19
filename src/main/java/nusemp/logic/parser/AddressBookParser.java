@@ -20,6 +20,7 @@ import nusemp.logic.commands.EventLinkCommand;
 import nusemp.logic.commands.EventListCommand;
 import nusemp.logic.commands.ExitCommand;
 import nusemp.logic.commands.HelpCommand;
+import nusemp.logic.commands.RemarkCommand;
 import nusemp.logic.parser.exceptions.ParseException;
 
 /**
@@ -72,6 +73,9 @@ public class AddressBookParser {
         case EXIT:
             return new ExitCommand();
 
+        case REMARK:
+            return new RemarkCommandParser().parse(userInput.split(" ", 2)[1]);
+
         case UNKNOWN:
             // Fallthrough
         default:
@@ -116,6 +120,9 @@ public class AddressBookParser {
 
         case ContactListCommand.COMMAND_WORD:
             return new ContactListCommandParser().parse(arguments);
+
+        case RemarkCommand.COMMAND_WORD:
+            return new RemarkCommandParser().parse(arguments);
 
         default:
             logger.finer("This user input caused a ParseException: " + userInput);

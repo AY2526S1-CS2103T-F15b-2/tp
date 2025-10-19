@@ -24,7 +24,7 @@ public class Person {
     private final Phone phone;
     private final Address address;
     private final Set<Tag> tags = new HashSet<>();
-
+    private final Remark remark;
     /**
      * Every field must be present and not null.
      */
@@ -35,6 +35,17 @@ public class Person {
         this.phone = phone;
         this.address = address;
         this.tags.addAll(tags);
+        this.remark = new Remark("");
+    }
+
+    public Person(Name name, Email email, Phone phone, Address address, Set<Tag> tags, Remark remark) {
+        requireAllNonNull(name, email, phone, address, tags);
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.address = address;
+        this.tags.addAll(tags);
+        this.remark = remark;
     }
 
     public Name getName() {
@@ -59,6 +70,10 @@ public class Person {
      */
     public Set<Tag> getTags() {
         return Collections.unmodifiableSet(tags);
+    }
+
+    public Remark getRemark() {
+        return remark;
     }
 
     /**
