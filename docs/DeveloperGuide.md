@@ -167,6 +167,94 @@ Classes used by multiple components are in the `nusemp.commons` package.
 
 This section describes some noteworthy details on how certain features are implemented.
 
+### Event Status and Tags Feature
+
+The Event model has been enhanced to include status tracking and tagging capabilities, allowing event organizers to better manage their events throughout their lifecycle.
+
+#### Implementation Details
+
+**Event Status Enum (`EventStatus`)**
+
+The `EventStatus` enum defines three distinct states for an event:
+- `STARTING`: The event is in its initial planning phase (default status for new events)
+- `ONGOING`: The event is currently in progress or active
+- `CLOSED`: The event has concluded
+
+The following class diagram illustrates the relationship between `Event`, `EventStatus`, `Participant`, and `Status`:
+
+<puml src="diagrams/event-edit/EventStatusClassDiagram.puml" width="600" />
+
+**Model Changes**
+
+The `Event` class has been updated to include:
+1. A `status` field of type `EventStatus` (defaults to `STARTING` for backward compatibility)
+2. A `tags` field of type `Set<Tag>` for categorizing events (e.g., "Music", "Orientation")
+3. Updated constructor to accept status as a parameter
+4. A `getStatus()` method to retrieve the current event status
+5. All immutable methods (`withContact`, `withoutContact`, `withUpdatedParticipant`) preserve the status when creating new Event instances
+
+**Storage**
+
+The `JsonAdaptedEvent` class handles serialization and deserialization:
+- Status is stored as a lowercase string in the JSON file
+- Backward compatibility: If status is missing from JSON, it defaults to `STARTING`
+- Status validation ensures only valid status values are deserialized
+
+**Parser Utilities**
+
+The `ParserUtil` class includes a `parseEventStatus()` method that:
+- Validates status strings (case-insensitive)
+- Throws `ParseException` for invalid status values
+- Converts valid strings to `EventStatus` enum values
+
+### Event Edit Command Feature
+
+The Event Edit command allows users to modify existing events without having to delete and recreate them.
+
+#### Implementation Details
+
+The following sequence diagram shows how an event edit command is executed:
+
+<puml src="diagrams/event-edit/EventEditSequenceDiagram.puml" width="800" />
+
+**Command Structure**
+
+The `EventEditCommand` follows the same pattern as `ContactEditCommand`:
+- Uses an `EditEventDescriptor` inner class to store the fields to be edited
+- Supports partial updates (only specified fields are changed)
+- Preserves participant information when editing other fields
+- Validates that at least one field is provided for editing
+
+**Supported Edit Operations**
+- Edit event name (`--name`)
+- Edit event date (`--date`)
+- Edit event address (`--address`)
+- Edit event status (`--status`)
+- Edit event tags (`--tag`)
+
+**Parser**
+
+The `EventEditCommandParser`:
+- Parses the event index from the command preamble
+- Tokenizes optional field prefixes
+- Validates that at least one field is provided
+- Prevents duplicate prefixes (except for tags, which can be specified multiple times)
+- Uses `ParserUtil.parseEventStatus()` for status validation
+
+The following activity diagram illustrates the validation and execution workflow for the event edit command:
+
+<puml src="diagrams/event-edit/EventEditActivityDiagram.puml" width="500" />
+
+**Design Considerations**
+
+Aspect: How to handle tags when editing
+- **Alternative 1 (current choice)**: Replace all existing tags with new tags
+  - Pros: Simple and predictable behavior, consistent with contact edit
+  - Cons: Cannot add individual tags without listing all desired tags
+- **Alternative 2**: Add new tags to existing tags
+  - Pros: More flexible for incremental updates
+  - Cons: More complex, requires additional command to remove individual tags
+
 ### \[Proposed\] Data archiving
 
 _{Explain here how the data archiving feature will be implemented}_
@@ -212,6 +300,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `* * *`  | event organizer | get a list of contacts defined by tags, roles, or event association       | target communications and manage groups efficiently    |
 | `* *`    | event organizer | set RSVP status for a contact for a specific event                        | track attendance commitments                           |
 | `* *`    | event organizer | edit any field of an existing contact, including role and RSVP status     | keep contact information up-to-date                    |
+| `* *`    | event organizer | edit event details (name, date, address, status, tags)                    | update event information as plans change               |
 | `* *`    | event organizer | view all details of a contact, including tags, and associated events      | see a clean, readable summary                          |
 | `* *`    | event organizer | view all details of an event, including tags, and associated contacts     | see a clean, readable summary                          |
 | `* *`    | event organizer | find contacts by searching any field (Name, Role, Tag, Email)             | quickly locate specific individuals                    |

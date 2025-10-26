@@ -1,0 +1,51 @@
+@startuml
+!include ../style.puml
+skinparam ActivityFontSize 15
+skinparam ActivityDiamondFontSize 12
+
+start
+:User enters event edit command;
+
+if (Command format valid?) then (yes)
+  :Parse event index;
+  if (Index valid?) then (yes)
+    :Retrieve event from list;
+    if (Event exists?) then (yes)
+      :Parse edit parameters
+      (name, date, address, status, tags);
+      if (At least one parameter provided?) then (yes)
+        if (Status provided?) then (yes)
+          if (Status valid?) then (yes)
+            :Update event status;
+          else (no)
+            :Display error: Invalid status;
+            stop
+          endif
+        endif
+        :Create edited event with new values;
+        if (Edited event duplicates another?) then (no)
+          :Replace old event with edited event;
+          :Display success message;
+          stop
+        else (yes)
+          :Display error: Duplicate event;
+          stop
+        endif
+      else (no)
+        :Display error: No fields to edit;
+        stop
+      endif
+    else (no)
+      :Display error: Invalid event index;
+      stop
+    endif
+  else (no)
+    :Display error: Invalid index format;
+    stop
+  endif
+else (no)
+  :Display error: Invalid command format;
+  stop
+endif
+
+@enduml

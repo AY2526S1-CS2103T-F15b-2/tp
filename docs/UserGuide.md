@@ -261,6 +261,27 @@ Adds an event to the event list.
 * `event add --name Meeting --date 25-12-2025 14:30 --address Meeting Room 4`
 * `event add --name Team Lunch --date 01-01-2026 12:00`
 
+#### Editing an event: `event edit`
+
+Edits the details of an existing event in the event list.
+
+**Format**: `event edit INDEX [--name NAME] [--date DATE] [--address ADDRESS] [--status STATUS] [--tag TAG]...`
+
+* Edits the event at the specified `INDEX`
+* The index refers to the index number shown in the displayed event list
+* The index must be a positive integer (1, 2, 3, ...)
+* At least one of the optional fields must be provided
+* Existing values will be overwritten by the input values
+* `STATUS` can be one of: `starting`, `ongoing`, or `closed` (case-insensitive)
+* When editing tags, the existing tags will be replaced by the new tags (not added to existing tags)
+* You can remove all tags by specifying `--tag` without any tag values
+
+**Examples**:
+* `event edit 1 --name Annual Meeting --status ongoing` edits the name and status of the 1st event
+* `event edit 2 --date 30-12-2025 15:00` edits the date of the 2nd event
+* `event edit 3 --tag Music --tag Orientation` replaces all tags of the 3rd event with "Music" and "Orientation"
+* `event edit 1 --address Conference Hall A --status closed` edits the address and sets status to closed
+
 #### Listing all events: `event list`
 
 Shows a list of all events in the event list.
@@ -374,6 +395,7 @@ _Details coming soon ..._
 | Action     | Format, Examples                                                                                                                            |
 |------------|---------------------------------------------------------------------------------------------------------------------------------------------|
 | **Add**    | `event add --name NAME --date DATE [--address ADDRESS]`<br>e.g. `event add --name Meeting --date 25-12-2025 14:30 --address Meeting Room 4` |
+| **Edit**   | `event edit INDEX [--name NAME] [--date DATE] [--address ADDRESS] [--status STATUS] [--tag TAG]...`<br>e.g. `event edit 1 --name Annual Meeting --status ongoing` |
 | **List**   | `event list`                                                                                                                                |
 | **Link**   | `event link --event EVENT_INDEX --contact CONTACT_INDEX`<br>e.g. `event link --event 1 --contact 2`                                         |
 | **Show** | `event show INDEX`<br>e.g. `event show 1` |

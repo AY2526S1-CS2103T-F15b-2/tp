@@ -1,0 +1,80 @@
+@startuml
+!include ../style.puml
+skinparam classAttributeIconSize 0
+
+package "Model" <<Rectangle>> {
+    class Event {
+        - name: Name
+        - date: Date
+        - address: Address
+        - status: EventStatus
+        - tags: Set<Tag>
+        - participants: List<Participant>
+        + Event(name: Name, date: Date, address: Address, status: EventStatus, tags: Set<Tag>, participants: List<Participant>)
+        + Event(name: Name, date: Date, address: Address)
+        + getName(): Name
+        + getDate(): Date
+        + getAddress(): Address
+        + getStatus(): EventStatus
+        + getTags(): Set<Tag>
+        + getParticipants(): List<Participant>
+        + withContact(contact: Contact): Event
+        + withoutContact(contact: Contact): Event
+        + withUpdatedParticipant(participant: Participant): Event
+    }
+
+    enum EventStatus {
+        STARTING
+        ONGOING
+        CLOSED
+        + toString(): String
+        + {static} fromString(statusString: String): EventStatus
+        + {static} isValidEventStatus(test: String): boolean
+    }
+
+    class Participant {
+        - contact: Contact
+        - status: Status
+        + Participant(contact: Contact)
+        + Participant(contact: Contact, status: Status)
+        + getContact(): Contact
+        + getStatus(): Status
+    }
+
+    enum Status {
+        CANCELLED
+        ATTENDING
+        UNKNOWN
+        + toString(): String
+        + {static} fromString(statusString: String): Status
+        + {static} isValidStatus(test: String): boolean
+    }
+
+    class Tag {
+        - tagName: String
+        + Tag(tagName: String)
+    }
+}
+
+Event "1" --> "1" EventStatus : has >
+Event "1" *--> "*" Tag : contains >
+Event "1" *--> "*" Participant : contains >
+Participant "1" --> "1" Status : has >
+
+note right of EventStatus
+  Event status tracks the
+  lifecycle of an event:
+  - STARTING: Initial planning
+  - ONGOING: Event in progress
+  - CLOSED: Event concluded
+end note
+
+note right of Status
+  Participant status tracks
+  attendance for a contact:
+  - ATTENDING: Confirmed
+  - CANCELLED: Not attending
+  - UNKNOWN: No response
+end note
+
+@enduml
