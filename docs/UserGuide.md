@@ -28,23 +28,26 @@ NUS Event Mailer Pro (NUS EMP) is a **desktop app that helps you manage hundreds
 
 1. Type the command in the command box (Opened with CTRL-T or the "⌘" button on the sidebar) and press Enter to execute it.
 <br />  e.g. typing **`help`** and pressing Enter will open the User Guide in your default browser.<br>
-   Some example commands you can try:
 
-   - `contact list` : Lists all contacts.
+UI Legend:
 
-   - `contact add --name John Doe --email johnd@example.com` : Adds a contact named `John Doe`.
 
-   - `contact delete 3` : Deletes the 3rd contact shown in the contact list.
+| #     | Explanation                                                                  |
+|-------|------------------------------------------------------------------------------|
+| **1** | Terminal window button, refer to 9 and 10 (Alternatively, open with CTRL-T). |
+| **2** | Opens the help window in your browser.                                       |
+| **3** | Exits the application.                                                       |
+| **4** | Switches between Light and Dark mode.                                        |
+| **5** | Switches between viewing Contacts or Events                                  |
+| **6** | Contact tags                                                                 |
+| **7** | Contact's linked events (Going)                                              |
+| **8** | Contact's linked events (Not Going)                                          |
+| **9** | Terminal window: Command Result window                                       |
+| **10**| Terminal window: Command Input box                                           |
 
-   - `event add --name Meeting --date 25-12-2025 14:30` : Adds an event named `Meeting`.
 
-   - `event list` : Lists all events.
 
-   - `event link --contact 2 --event 1` : Links the 2nd contact in the contact list to the 1st event in the event list.
-
-   - `exit` : Exits the app.
-
-1. Refer to the [Features](#features) below for details of each command.
+Refer to the [Features](#features) below for details of each command.
 
 ---
 
