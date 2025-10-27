@@ -1,0 +1,67 @@
+@startuml
+!include ../style.puml
+
+skinparam class {
+    BackgroundColor White
+    BorderColor Black
+    FontColor Black
+}
+
+skinparam interface {
+    BackgroundColor LightYellow
+    BorderColor Black
+    FontColor Black
+}
+
+package "Logic" {
+    class ContactFindCommand {
+        - predicate: Predicate<Contact>
+        + execute(model: Model): CommandResult
+    }
+
+    class ContactFindCommandParser {
+        + parse(args: String): ContactFindCommand
+    }
+}
+
+package "Model" {
+    interface Predicate<Contact> <<interface>> {
+        + test(contact: Contact): boolean
+    }
+
+    class NameContainsKeywordsPredicate {
+        - keywords: List<String>
+        + test(contact: Contact): boolean
+    }
+
+    class EmailContainsKeywordsPredicate {
+        - keywords: List<String>
+        + test(contact: Contact): boolean
+    }
+
+    class TagContainsKeywordsPredicate {
+        - keywords: List<String>
+        + test(contact: Contact): boolean
+    }
+
+    class ContactMatchesAnyPredicatePredicate {
+        - predicates: List<Predicate<Contact>>
+        + test(contact: Contact): boolean
+    }
+}
+
+ContactFindCommandParser ..> ContactFindCommand : creates
+ContactFindCommand --> Predicate : uses
+NameContainsKeywordsPredicate ..|> Predicate
+EmailContainsKeywordsPredicate ..|> Predicate
+TagContainsKeywordsPredicate ..|> Predicate
+ContactMatchesAnyPredicatePredicate ..|> Predicate
+ContactMatchesAnyPredicatePredicate o--> "many" Predicate : combines
+
+note right of ContactMatchesAnyPredicatePredicate
+  Combines multiple predicates
+  with AND logic between fields
+  and OR logic within each field
+end note
+
+@enduml

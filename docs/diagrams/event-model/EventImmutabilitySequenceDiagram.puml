@@ -1,0 +1,46 @@
+@startuml
+!include ../style.puml
+
+skinparam SequenceBoxFontColor Black
+
+box Logic LOGIC_COLOR_T1
+participant ":EventAddCommand" as Command LOGIC_COLOR
+end box
+
+box Model MODEL_COLOR_T1
+participant "event:Event" as OldEvent MODEL_COLOR
+participant "newEvent:Event" as NewEvent MODEL_COLOR
+participant "model:Model" as Model MODEL_COLOR
+end box
+
+Command -> OldEvent : withContact(contact, status)
+activate OldEvent
+
+create NewEvent
+OldEvent -> NewEvent : new Event(name, date, address,\nstatus, tags, updatedParticipants)
+activate NewEvent
+NewEvent --> OldEvent : newEvent
+deactivate NewEvent
+
+OldEvent --> Command : newEvent
+deactivate OldEvent
+
+Command -> Model : setEvent(oldEvent, newEvent)
+activate Model
+Model --> Command
+deactivate Model
+
+note right of OldEvent
+  Original Event remains
+  unchanged - immutability
+  is preserved
+end note
+
+note left of NewEvent
+  New Event created with
+  updated participant list,
+  preserving all other fields
+  including status
+end note
+
+@enduml

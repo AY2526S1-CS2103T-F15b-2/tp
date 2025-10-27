@@ -2,57 +2,44 @@
 !include ../style.puml
 skinparam classAttributeIconSize 0
 
+skinparam class {
+    BackgroundColor White
+    BorderColor Black
+    FontColor Black
+}
+
+skinparam enum {
+    BackgroundColor LightYellow
+    BorderColor Black
+    FontColor Black
+}
+
 package "Model" <<Rectangle>> {
     class Event {
-        - name: Name
-        - date: Date
-        - address: Address
         - status: EventStatus
         - tags: Set<Tag>
         - participants: List<Participant>
-        + Event(name: Name, date: Date, address: Address, status: EventStatus, tags: Set<Tag>, participants: List<Participant>)
-        + Event(name: Name, date: Date, address: Address)
-        + getName(): Name
-        + getDate(): Date
-        + getAddress(): Address
-        + getStatus(): EventStatus
-        + getTags(): Set<Tag>
-        + getParticipants(): List<Participant>
-        + withContact(contact: Contact): Event
-        + withoutContact(contact: Contact): Event
-        + withUpdatedParticipant(participant: Participant): Event
     }
 
     enum EventStatus {
         STARTING
         ONGOING
         CLOSED
-        + toString(): String
-        + {static} fromString(statusString: String): EventStatus
-        + {static} isValidEventStatus(test: String): boolean
     }
 
     class Participant {
         - contact: Contact
         - status: Status
-        + Participant(contact: Contact)
-        + Participant(contact: Contact, status: Status)
-        + getContact(): Contact
-        + getStatus(): Status
     }
 
     enum Status {
-        CANCELLED
         ATTENDING
+        CANCELLED
         UNKNOWN
-        + toString(): String
-        + {static} fromString(statusString: String): Status
-        + {static} isValidStatus(test: String): boolean
     }
 
     class Tag {
         - tagName: String
-        + Tag(tagName: String)
     }
 }
 

@@ -1,0 +1,57 @@
+@startuml
+!include ../style.puml
+
+skinparam SequenceBoxFontColor Black
+
+box Logic LOGIC_COLOR_T1
+participant ":LogicManager" as LogicManager LOGIC_COLOR
+participant ":AppParser" as AppParser LOGIC_COLOR
+participant ":ContactFindCommandParser" as Parser LOGIC_COLOR
+participant ":ContactFindCommand" as Command LOGIC_COLOR
+end box
+
+box Model MODEL_COLOR_T1
+participant ":Model" as Model MODEL_COLOR
+end box
+
+[-> LogicManager : execute("contact find ""--name"" alice ""--email"" gmail")
+activate LogicManager
+
+LogicManager -> AppParser : parseCommand("contact find ""--name"" alice ""--email"" gmail")
+activate AppParser
+
+AppParser -> Parser : parse("""--name"" alice ""--email"" gmail")
+activate Parser
+
+create Command
+Parser -> Command : new ContactFindCommand(predicate)
+activate Command
+Command --> Parser
+deactivate Command
+
+Parser --> AppParser : contactFindCommand
+deactivate Parser
+
+AppParser --> LogicManager : contactFindCommand
+deactivate AppParser
+
+LogicManager -> Command : execute(model)
+activate Command
+
+Command -> Model : updateFilteredContactList(predicate)
+activate Model
+Model --> Command
+deactivate Model
+
+Command -> Model : getFilteredContactList()
+activate Model
+Model --> Command : filteredList
+deactivate Model
+
+Command --> LogicManager : commandResult
+deactivate Command
+
+[<-- LogicManager : commandResult
+deactivate LogicManager
+
+@enduml

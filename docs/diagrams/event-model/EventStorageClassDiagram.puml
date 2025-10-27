@@ -1,0 +1,93 @@
+@startuml
+!include ../style.puml
+
+skinparam class {
+    BackgroundColor White
+    BorderColor Black
+    FontColor Black
+}
+
+package "Storage Layer" {
+    class JsonAdaptedEvent {
+        - name: String
+        - date: String
+        - address: String
+        - status: String
+        - participants: List<JsonAdaptedParticipant>
+        - tags: List<JsonAdaptedTag>
+        + JsonAdaptedEvent(event: Event)
+        + JsonAdaptedEvent(name, date, address, status, participants, tags)
+        + toModelType(): Event
+    }
+
+    class JsonAdaptedParticipant {
+        - email: String
+        - status: String
+        + JsonAdaptedParticipant(participant: Participant)
+        + JsonAdaptedParticipant(email, status)
+        + toModelType(contacts: List<Contact>): Participant
+    }
+
+    class JsonAdaptedTag {
+        - tagName: String
+        + JsonAdaptedTag(tag: Tag)
+        + JsonAdaptedTag(tagName: String)
+        + toModelType(): Tag
+    }
+
+    class JsonSerializableAddressBook {
+        - contacts: List<JsonAdaptedContact>
+        - events: List<JsonAdaptedEvent>
+        + JsonSerializableAddressBook(source: ReadOnlyAddressBook)
+        + toModelType(): AddressBook
+    }
+}
+
+package "Model Layer" {
+    class Event {
+        - name: Name
+        - date: Date
+        - address: Address
+        - status: EventStatus
+        - participants: List<Participant>
+        - tags: Set<Tag>
+    }
+
+    class Participant {
+        - status: Status
+        - contact: Contact
+    }
+
+    class Tag {
+        - tagName: String
+    }
+
+    class AddressBook {
+        - contacts: UniqueContactList
+        - events: UniqueEventList
+    }
+}
+
+JsonAdaptedEvent ..> Event : converts to/from
+JsonAdaptedParticipant ..> Participant : converts to/from
+JsonAdaptedTag ..> Tag : converts to/from
+JsonSerializableAddressBook ..> AddressBook : converts to/from
+
+JsonAdaptedEvent "1" *-- "many" JsonAdaptedParticipant : contains
+JsonAdaptedEvent "1" *-- "many" JsonAdaptedTag : contains
+JsonSerializableAddressBook "1" *-- "many" JsonAdaptedEvent : serializes
+
+note right of JsonAdaptedEvent
+  Handles backward compatibility:
+  - Defaults status to STARTING if null
+  - Validates status on deserialization
+  - Uses @JsonInclude for optional fields
+end note
+
+note left of JsonAdaptedParticipant
+  Stores participant by email
+  instead of object reference
+  for JSON serialization
+end note
+
+@enduml

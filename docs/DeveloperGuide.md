@@ -167,6 +167,92 @@ Classes used by multiple components are in the `nusemp.commons` package.
 
 This section describes some noteworthy details on how certain features are implemented.
 
+### Event Model and Abstractions
+
+The Event model provides a complete abstraction layer for managing events in NUS Event Mailer Pro, maintaining consistency with the existing Contact architecture while supporting event-specific functionality.
+
+#### Implementation Details
+
+**Event Class Structure**
+
+The `Event` class is designed with the following key characteristics:
+- **Immutability**: All methods that modify an event (e.g., `withContact()`, `withoutContact()`) return new `Event` instances
+- **Identity**: Events are uniquely identified by their name
+- **Participants**: Each event maintains a list of `Participant` objects, linking `Contact` objects to their participation status
+- **Bidirectional relationship**: Events reference Contacts through Participants, and Contacts maintain a list of Events they participate in
+
+The following class diagram illustrates the complete Event model structure:
+
+<puml src="diagrams/event-model/EventModelClassDiagram.puml" width="800" />
+
+**Storage Layer**
+
+The storage layer uses JSON adapters to serialize and deserialize event data:
+- `JsonAdaptedEvent`: Converts between `Event` objects and JSON representation
+- `JsonAdaptedParticipant`: Stores participants by email reference instead of object reference
+- Backward compatibility: Missing fields default to appropriate values (e.g., status defaults to `STARTING`)
+
+<puml src="diagrams/event-model/EventStorageClassDiagram.puml" width="700" />
+
+**Immutability Pattern**
+
+Events follow an immutability pattern where modifications create new instances:
+
+<puml src="diagrams/event-model/EventImmutabilitySequenceDiagram.puml" width="600" />
+
+**Design Considerations**
+
+**Participant Storage**: Events store a `List<Participant>` in memory with direct object references for fast access. For JSON serialization, participants are stored by email reference instead of object reference. This provides simple serialization while requiring email resolution when loading from JSON.
+
+**Event Uniqueness**: Events are considered duplicates if they have the same name. This provides simple and intuitive duplicate checking, though it means multiple events cannot share the same name even on different dates.
+
+### Contact Find Feature
+
+The Contact Find feature allows users to search for contacts using multiple field-specific criteria with flexible boolean logic.
+
+#### Implementation Details
+
+**Search Logic**
+
+The find command supports two search modes:
+1. **Backward compatible mode**: `contact find alice bob` searches for "alice" OR "bob" in contact names
+2. **Advanced mode**: `contact find --name alice --email gmail --tag friend` with the following logic:
+   - Within each field: OR logic (e.g., name contains "alice" OR "bob")
+   - Between fields: AND logic (e.g., name matches AND email matches AND tag matches)
+
+The following class diagram shows the predicate structure:
+
+<puml src="diagrams/contact-find/ContactFindClassDiagram.puml" width="650" />
+
+**Parser Implementation**
+
+The `ContactFindCommandParser`:
+- Tokenizes input by prefixes (`--name`, `--email`, `--tag`)
+- Creates field-specific predicates for each prefix
+- Combines predicates using `ContactMatchesAnyPredicatePredicate` for AND logic between fields
+- Falls back to simple name search if no prefixes are present (backward compatibility)
+
+The following sequence diagram illustrates the command execution flow:
+
+<puml src="diagrams/contact-find/ContactFindSequenceDiagram.puml" width="800" />
+
+**Validation and Execution**
+
+The following activity diagram shows the parsing and validation workflow:
+
+<puml src="diagrams/contact-find/ContactFindActivityDiagram.puml" width="550" />
+
+**Predicate Classes**
+
+- `NameContainsKeywordsPredicate`: Matches if contact name contains any of the keywords
+- `EmailContainsKeywordsPredicate`: Matches if contact email contains any of the keywords
+- `TagContainsKeywordsPredicate`: Matches if any contact tag contains any of the keywords
+- `ContactMatchesAnyPredicatePredicate`: Combines multiple predicates with AND logic
+
+**Design Considerations**
+
+**Search Boolean Logic**: The find command uses OR logic within each field and AND logic between different fields. For example, `--name alice bob --email gmail` matches contacts where the name contains "alice" OR "bob" AND the email contains "gmail". This approach is intuitive for most use cases and follows common search UI patterns.
+
 ### Event Status and Tags Feature
 
 The Event model has been enhanced to include status tracking and tagging capabilities, allowing event organizers to better manage their events throughout their lifecycle.
@@ -247,13 +333,7 @@ The following activity diagram illustrates the validation and execution workflow
 
 **Design Considerations**
 
-Aspect: How to handle tags when editing
-- **Alternative 1 (current choice)**: Replace all existing tags with new tags
-  - Pros: Simple and predictable behavior, consistent with contact edit
-  - Cons: Cannot add individual tags without listing all desired tags
-- **Alternative 2**: Add new tags to existing tags
-  - Pros: More flexible for incremental updates
-  - Cons: More complex, requires additional command to remove individual tags
+**Tag Editing Behavior**: When editing tags, all existing tags are replaced with the new tags specified in the command. This provides simple and predictable behavior that is consistent with the contact edit command. Users can remove all tags by specifying `--tag` without any tag values.
 
 ### \[Proposed\] Data archiving
 

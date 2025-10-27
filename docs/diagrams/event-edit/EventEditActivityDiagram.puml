@@ -6,46 +6,30 @@ skinparam ActivityDiamondFontSize 12
 start
 :User enters event edit command;
 
-if (Command format valid?) then (yes)
-  :Parse event index;
-  if (Index valid?) then (yes)
-    :Retrieve event from list;
-    if (Event exists?) then (yes)
-      :Parse edit parameters
-      (name, date, address, status, tags);
-      if (At least one parameter provided?) then (yes)
-        if (Status provided?) then (yes)
-          if (Status valid?) then (yes)
-            :Update event status;
-          else (no)
-            :Display error: Invalid status;
-            stop
-          endif
-        endif
-        :Create edited event with new values;
-        if (Edited event duplicates another?) then (no)
-          :Replace old event with edited event;
-          :Display success message;
-          stop
-        else (yes)
-          :Display error: Duplicate event;
-          stop
-        endif
+:Parse index and parameters;
+
+if (Valid index and at least one parameter?) then (yes)
+  :Retrieve event;
+  if (Event exists?) then (yes)
+    :Validate parameters;
+    if (All valid?) then (yes)
+      :Create edited event;
+      if (Not duplicate?) then (yes)
+        :Update event in list;
+        :Display success;
       else (no)
-        :Display error: No fields to edit;
-        stop
+        :Error: Duplicate event;
       endif
     else (no)
-      :Display error: Invalid event index;
-      stop
+      :Error: Invalid parameters;
     endif
   else (no)
-    :Display error: Invalid index format;
-    stop
+    :Error: Event not found;
   endif
 else (no)
-  :Display error: Invalid command format;
-  stop
+  :Error: Invalid command;
 endif
+
+stop
 
 @enduml

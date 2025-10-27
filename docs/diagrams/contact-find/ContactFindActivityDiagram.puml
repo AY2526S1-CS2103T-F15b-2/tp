@@ -1,0 +1,23 @@
+@startuml
+!include ../style.puml
+
+start
+:User enters find command;
+
+if (Has prefixes?) then (yes)
+  :Parse ""--name"", ""--email"", ""--tag"" arguments;
+  :Create field-specific predicates;
+  if (Multiple fields?) then (yes)
+    :Combine with AND logic;
+  endif
+else (no)
+  :Parse as name keywords (backward compatible);
+endif
+
+:Create ContactFindCommand;
+:Update filtered contact list;
+:Return matching contacts;
+
+stop
+
+@enduml

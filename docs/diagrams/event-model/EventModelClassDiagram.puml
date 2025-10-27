@@ -1,0 +1,74 @@
+@startuml
+!include ../style.puml
+
+skinparam class {
+    BackgroundColor White
+    BorderColor Black
+    FontColor Black
+}
+
+skinparam enum {
+    BackgroundColor LightYellow
+    BorderColor Black
+    FontColor Black
+}
+
+class Event {
+    - participants: List<Participant>
+    - status: EventStatus
+    - tags: Set<Tag>
+    + withContact(): Event
+    + withoutContact(): Event
+}
+
+class Participant {
+    - contact: Contact
+    - status: Status
+}
+
+enum Status {
+    ATTENDING
+    CANCELLED
+    UNKNOWN
+}
+
+enum EventStatus {
+    STARTING
+    ONGOING
+    CLOSED
+}
+
+class Contact {
+    - events: List<Event>
+}
+
+Event "1" *-- "*" Participant
+Event --> EventStatus
+Event "1" o-- "*" Tag
+
+Participant --> Contact
+Participant --> Status
+
+Contact "1" o-- "*" Event
+
+note right of Event
+  Events are immutable.
+  Methods like withContact()
+  return new Event instances
+  with updated participants.
+end note
+
+note left of Participant
+  Participant links a Contact
+  to an Event with a Status
+  (ATTENDING, CANCELLED, UNKNOWN)
+end note
+
+note bottom of EventStatus
+  EventStatus tracks the event
+  lifecycle (STARTING, ONGOING,
+  CLOSED), different from
+  participant Status.
+end note
+
+@enduml
