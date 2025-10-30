@@ -76,20 +76,34 @@ The sections below give more details of each component.
 
 ### UI component
 
-The **API** of this component is specified in [`Ui.java`](https://github.com/AY2526S1-CS2103T-F15b-2/tp/tree/master/src/main/java/nusemp/ui/Ui.java)
+The **API** of this component is specified in [`Ui.java`](https://github.com/AY2526S1-CS2103T-F15b-2/tp/tree/master/src/main/java/nusemp/ui/Ui.java).
 
 <puml src="diagrams/UiClassDiagram.puml" alt="Structure of the UI Component"/>
 
-The UI consists of a `MainWindow` that is made up of parts e.g.`CommandBox`, `ResultDisplay`, `PersonListPanel`, `StatusBarFooter` etc. All these, including the `MainWindow`, inherit from the abstract `UiPart` class which captures the commonalities between classes that represent parts of the visible GUI.
+The UI is organized around a UI manager and a set of reusable UI parts:
 
-The `UI` component uses the JavaFx UI framework. The layout of these UI parts are defined in matching `.fxml` files that are in the `src/main/resources/view` folder. For example, the layout of the [`MainWindow`](https://github.com/AY2526S1-CS2103T-F15b-2/tp/tree/master/src/main/java/nusemp/ui/MainWindow.java) is specified in [`MainWindow.fxml`](https://github.com/AY2526S1-CS2103T-F15b-2/tp/tree/master/src/main/resources/view/MainWindow.fxml)
+- Ui and UiManager
+  - The UI exposes an interface (`Ui`) and a manager (`UiManager`) which implements it. `UiManager` is responsible for wiring up the UI at application startup and delegating runtime interactions to the `MainWindow`.
+- UiPart
+  - All visible parts extend the abstract `UiPart` class capturing common behaviour and lifecycle for FXML-backed components.
 
-The `UI` component,
+MainWindow composition (parts)
+- `MainWindow` is composed of a set of parts which are implemented as `UiPart` subclasses:
+  - `CommandBox`
+  - `ResultDisplay`
+  - `ContactListPanel`
+  - `EventListPanel`
+  - `StatusBarFooter`
 
-- executes user commands using the `Logic` component.
-- listens for changes to `Model` data so that the UI can be updated with the modified data.
-- keeps a reference to the `Logic` component, because the `UI` relies on the `Logic` to execute commands.
-- depends on some classes in the `Model` component, as it displays `Person` object residing in the `Model`.
+Terminal elements
+- `CommandBox` captures user command input.
+- `ResultDisplay` shows the result of command execution.
+- Both of these are automatically hidden, unless the user presses the terminal button located on the sidebar or presses the keyboard shortcut (Ctrl + T) which will bring them up.
+
+List and card elements
+- `ContactListPanel` renders a list of `ContactCard` items, which fetch their data from the `model` component.
+- `EventListPanel` renders a list of `EventCard` items, which fetch their data from the `model` component.
+- `ListHeading` and `PrefixedList` are small reusable components used by the list panels for consistent headings and prefixed indexing.
 
 ### Logic component
 
