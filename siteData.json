@@ -92,7 +92,8 @@
         "b-2-contact-management-testing": "B.2 Contact Management Testing",
         "b-3-event-management-testing": "B.3 Event Management Testing",
         "b-4-data-persistence-testing": "B.4 Data Persistence Testing",
-        "b-5-error-handling-testing": "B.5 Error Handling Testing"
+        "b-5-error-handling-testing": "B.5 Error Handling Testing",
+        "appendix-c-effort": "Appendix C: Effort"
       },
       "headingKeywords": {}
     },
