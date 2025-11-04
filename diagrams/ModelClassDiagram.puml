@@ -21,7 +21,7 @@ Class Event
 Class Participant
 Class ParticipantMap
 
-Class _____________ #FFFFFF
+Class WWWWWWWW #FFFFFF
 
 }
 
@@ -49,6 +49,7 @@ Contact "*" - "*" Event
 (Contact, Event) .. Participant
 ParticipantMap -[norank]-> "~*" Participant
 
+WWWWWWWW -right[hidden]- ReadOnlyAppData
 UserPrefs -down[hidden]- UniqueEventList
 ParticipantMap -right[hidden]- UniqueContactList
 @enduml

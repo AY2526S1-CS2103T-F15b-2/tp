@@ -93,7 +93,8 @@
         "b-3-event-management-testing": "B.3 Event Management Testing",
         "b-4-data-persistence-testing": "B.4 Data Persistence Testing",
         "b-5-error-handling-testing": "B.5 Error Handling Testing",
-        "appendix-c-effort": "Appendix C: Effort"
+        "appendix-c-effort": "Appendix C: Effort",
+        "appendix-d-planned-enhancements": "Appendix D: Planned Enhancements"
       },
       "headingKeywords": {}
     },
@@ -137,7 +138,7 @@
       "src": "UserGuide.md",
       "title": "User Guide",
       "headings": {
-        "nus-event-mailer-pro": "NUS Event Mailer Pro",
+        "nus-event-mailer-pro-user-guide": "NUS Event Mailer Pro User Guide",
         "1-getting-started": "1. Getting Started",
         "1-1-installation": "1.1 Installation",
         "1-2-command-formats": "1.2 Command Formats",
@@ -158,20 +159,20 @@
         "3-5-event-delete": "3.5 event delete",
         "3-6-event-link": "3.6 event link",
         "3-7-event-unlink": "3.7 event unlink",
-        "3-8-event-show": "3.8 event show",
-        "3-9-event-export": "3.9 event export",
-        "3-10-event-rsvp": "3.10 event rsvp",
+        "3-8-event-rsvp": "3.8 event rsvp",
+        "3-9-event-show": "3.9 event show",
+        "3-10-event-export": "3.10 event export",
         "4-your-data-is-safe": "4. Your Data is Safe",
         "4-1-automatic-saving": "4.1 Automatic Saving",
         "4-2-advanced-editing-data-directly": "4.2 Advanced: Editing Data Directly",
         "5-frequently-asked-questions": "5. Frequently Asked Questions",
         "6-known-issues": "6. Known Issues",
-        "7-quick-command-reference": "7. Quick Command Reference",
-        "7-1-basic-commands": "7.1 Basic Commands",
-        "7-2-contact-commands": "7.2 Contact Commands",
-        "7-3-event-commands": "7.3 Event Commands",
-        "8-you-re-all-set": "8. You're All Set!",
-        "9-coming-soon": "9. Coming soon..."
+        "7-coming-soon": "7. Coming soon…",
+        "8-quick-command-reference": "8. Quick Command Reference",
+        "8-1-basic-commands": "8.1 Basic Commands",
+        "8-2-contact-commands": "8.2 Contact Commands",
+        "8-3-event-commands": "8.3 Event Commands",
+        "9-you-re-all-set": "9. You're All Set!"
       },
       "headingKeywords": {}
     },
